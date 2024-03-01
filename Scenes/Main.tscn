@@ -1,8 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://d140t8x8uydxl"]
+[gd_scene load_steps=3 format=3 uid="uid://d140t8x8uydxl"]
 
 [ext_resource type="PackedScene" uid="uid://c526f6ned8gt" path="res://Prefabs/Player.tscn" id="1_fel8l"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="2_uyfrl"]
 
 [node name="Node2D" type="Node2D"]
 
+[node name="StateChartDebugger" parent="." instance=ExtResource("2_uyfrl")]
+offset_left = 718.0
+offset_top = 39.0
+offset_right = 1098.0
+offset_bottom = 317.0
+initial_node_to_watch = NodePath("../CharacterBody2D/StateChart")
+
 [node name="CharacterBody2D" parent="." instance=ExtResource("1_fel8l")]
 position = Vector2(566, 302)
+
+[editable path="CharacterBody2D"]
