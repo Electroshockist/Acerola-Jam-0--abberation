@@ -1,11 +1,13 @@
-[gd_scene load_steps=17 format=3 uid="uid://c526f6ned8gt"]
+[gd_scene load_steps=27 format=3 uid="uid://c526f6ned8gt"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_sno6y"]
 [ext_resource type="Texture2D" uid="uid://dddxj0ky0ibj0" path="res://art/character art/char_a_p1_0bas_humn_v01.png" id="2_uteem"]
+[ext_resource type="Script" path="res://Scripts/AnimationHandler.gd" id="3_62k1a"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="4_a84hp"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="5_fq60k"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/animation_player_state.gd" id="6_bj023"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="7_slp0t"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/expression_guard.gd" id="8_f30ij"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4vt2f"]
 
@@ -153,6 +155,38 @@ _data = {
 "Walking_right": SubResource("Animation_65x3o")
 }
 
+[sub_resource type="Resource" id="Resource_ebstt"]
+script = ExtResource("8_f30ij")
+expression = "direction == 0"
+
+[sub_resource type="Resource" id="Resource_83sxk"]
+script = ExtResource("8_f30ij")
+expression = "direction == 1"
+
+[sub_resource type="Resource" id="Resource_qejup"]
+script = ExtResource("8_f30ij")
+expression = "direction == 2"
+
+[sub_resource type="Resource" id="Resource_u36nk"]
+script = ExtResource("8_f30ij")
+expression = "direction == 3"
+
+[sub_resource type="Resource" id="Resource_8h3rx"]
+script = ExtResource("8_f30ij")
+expression = "direction == 0"
+
+[sub_resource type="Resource" id="Resource_iumcm"]
+script = ExtResource("8_f30ij")
+expression = "direction == 1"
+
+[sub_resource type="Resource" id="Resource_775qw"]
+script = ExtResource("8_f30ij")
+expression = "direction == 2"
+
+[sub_resource type="Resource" id="Resource_qhpyq"]
+script = ExtResource("8_f30ij")
+expression = "direction == 3"
+
 [node name="CharacterBody2D" type="CharacterBody2D"]
 script = ExtResource("1_sno6y")
 
@@ -169,108 +203,109 @@ frame = 8
 libraries = {
 "": SubResource("AnimationLibrary_a23bc")
 }
+script = ExtResource("3_62k1a")
 
-[node name="StateChart" type="Node" parent="."]
+[node name="Locomotion" type="Node" parent="."]
 script = ExtResource("4_a84hp")
 
-[node name="Locomotion" type="Node" parent="StateChart"]
+[node name="root" type="Node" parent="Locomotion"]
 script = ExtResource("5_fq60k")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateChart/Locomotion"]
+[node name="Idle" type="Node" parent="Locomotion/root"]
 script = ExtResource("5_fq60k")
 initial_state = NodePath("Front")
 
-[node name="Front" type="Node" parent="StateChart/Locomotion/Idle"]
+[node name="Front" type="Node" parent="Locomotion/root/Idle"]
 script = ExtResource("6_bj023")
 animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
 animation_name = &"Idle_front"
 
-[node name="Back" type="Node" parent="StateChart/Locomotion/Idle"]
+[node name="Back" type="Node" parent="Locomotion/root/Idle"]
 script = ExtResource("6_bj023")
 animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
 animation_name = &"Idle_back"
 
-[node name="Left" type="Node" parent="StateChart/Locomotion/Idle"]
+[node name="Left" type="Node" parent="Locomotion/root/Idle"]
 script = ExtResource("6_bj023")
 animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
 animation_name = &"Idle_left"
 
-[node name="Right" type="Node" parent="StateChart/Locomotion/Idle"]
+[node name="Right" type="Node" parent="Locomotion/root/Idle"]
 script = ExtResource("6_bj023")
 animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
 animation_name = &"Idle_right"
 
-[node name="To Walking" type="Node" parent="StateChart/Locomotion/Idle"]
+[node name="To Walking" type="Node" parent="Locomotion/root/Idle"]
 script = ExtResource("7_slp0t")
 to = NodePath("../../Walking")
 event = &"walking"
 
-[node name="To Front" type="Node" parent="StateChart/Locomotion/Idle"]
+[node name="To Front" type="Node" parent="Locomotion/root/Idle"]
 script = ExtResource("7_slp0t")
 to = NodePath("../Front")
-event = &"front"
+guard = SubResource("Resource_ebstt")
 
-[node name="To Back" type="Node" parent="StateChart/Locomotion/Idle"]
+[node name="To Back" type="Node" parent="Locomotion/root/Idle"]
 script = ExtResource("7_slp0t")
 to = NodePath("../Back")
-event = &"back"
+guard = SubResource("Resource_83sxk")
 
-[node name="To Left" type="Node" parent="StateChart/Locomotion/Idle"]
+[node name="To Left" type="Node" parent="Locomotion/root/Idle"]
 script = ExtResource("7_slp0t")
 to = NodePath("../Left")
-event = &"left"
+guard = SubResource("Resource_qejup")
 
-[node name="To Right" type="Node" parent="StateChart/Locomotion/Idle"]
+[node name="To Right" type="Node" parent="Locomotion/root/Idle"]
 script = ExtResource("7_slp0t")
 to = NodePath("../Right")
-event = &"right"
+guard = SubResource("Resource_u36nk")
 
-[node name="Walking" type="Node" parent="StateChart/Locomotion"]
+[node name="Walking" type="Node" parent="Locomotion/root"]
 script = ExtResource("5_fq60k")
 initial_state = NodePath("Front")
 
-[node name="Front" type="Node" parent="StateChart/Locomotion/Walking"]
+[node name="Front" type="Node" parent="Locomotion/root/Walking"]
 script = ExtResource("6_bj023")
 animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
 animation_name = &"Walking_front"
 
-[node name="Back" type="Node" parent="StateChart/Locomotion/Walking"]
+[node name="Back" type="Node" parent="Locomotion/root/Walking"]
 script = ExtResource("6_bj023")
 animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
 animation_name = &"Walking_back"
 
-[node name="Left" type="Node" parent="StateChart/Locomotion/Walking"]
+[node name="Left" type="Node" parent="Locomotion/root/Walking"]
 script = ExtResource("6_bj023")
 animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
 animation_name = &"Walking_left"
 
-[node name="Right" type="Node" parent="StateChart/Locomotion/Walking"]
+[node name="Right" type="Node" parent="Locomotion/root/Walking"]
 script = ExtResource("6_bj023")
 animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
 animation_name = &"Walking_right"
 
-[node name="To Idle" type="Node" parent="StateChart/Locomotion/Walking"]
+[node name="To Idle" type="Node" parent="Locomotion/root/Walking"]
 script = ExtResource("7_slp0t")
 to = NodePath("../../Idle")
 event = &"idle"
 
-[node name="To Front" type="Node" parent="StateChart/Locomotion/Walking"]
+[node name="To Front" type="Node" parent="Locomotion/root/Walking"]
 script = ExtResource("7_slp0t")
 to = NodePath("../Front")
-event = &"front"
+guard = SubResource("Resource_8h3rx")
 
-[node name="To Back" type="Node" parent="StateChart/Locomotion/Walking"]
+[node name="To Back" type="Node" parent="Locomotion/root/Walking"]
 script = ExtResource("7_slp0t")
 to = NodePath("../Back")
-event = &"back"
+guard = SubResource("Resource_iumcm")
 
-[node name="To Left" type="Node" parent="StateChart/Locomotion/Walking"]
+[node name="To Left" type="Node" parent="Locomotion/root/Walking"]
 script = ExtResource("7_slp0t")
 to = NodePath("../Left")
-event = &"left"
+guard = SubResource("Resource_775qw")
 
-[node name="To Right" type="Node" parent="StateChart/Locomotion/Walking"]
+[node name="To Right" type="Node" parent="Locomotion/root/Walking"]
 script = ExtResource("7_slp0t")
 to = NodePath("../Right")
-event = &"right"
+guard = SubResource("Resource_qhpyq")

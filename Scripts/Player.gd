@@ -1,5 +1,5 @@
 extends CharacterBody2D
-
+class_name Player
 
 @export var speed = 300.0
 
@@ -11,30 +11,7 @@ enum {
 }
 
 var _facing_dir := FRONT
-var _is_idle := true
-
-func _input(event):
-	
-	if event.is_action("Move Down"):
-		if _facing_dir != FRONT:
-			_facing_dir = FRONT
-			$StateChart.send_event("front")
-			
-	elif event.is_action("Move Up"):
-		if _facing_dir != BACK:
-			_facing_dir = BACK
-			$StateChart.send_event("back")
-			
-	elif event.is_action("Move Left"):
-		if _facing_dir != LEFT:
-			_facing_dir = LEFT
-			$StateChart.send_event("left")
-			
-	elif event.is_action("Move Right"):
-		if _facing_dir != RIGHT:
-			_facing_dir = RIGHT
-			$StateChart.send_event("right")
-	
+var is_idle := true
 
 func _physics_process(_delta):
 	# Get the input direction and handle the movement/deceleration.
@@ -43,14 +20,31 @@ func _physics_process(_delta):
 	
 	velocity = direction * speed
 	
-	if _is_idle && velocity.length() > 0:
-		_is_idle = false
-		$StateChart.send_event("moving")
+	if is_idle && velocity.length() > 0:
+		is_idle = false
+		$Locomotion.send_event("walking")
 		print("Started Moving")
-	elif !_is_idle && velocity.length() == 0:
-		_is_idle = true
-		$StateChart.send_event("idle")
+	elif !is_idle && velocity.length() == 0:
+		is_idle = true
+		$Locomotion.send_event("idle")
 		print("Stopped Moving")
 		
 	
 	move_and_slide()
+	
+	_handle_anim_vars()
+
+func _handle_anim_vars():
+	if velocity.y < 0:
+			_facing_dir = FRONT
+			
+	elif velocity.y > 0:
+			_facing_dir = BACK
+			
+	elif velocity.x < 0:
+			_facing_dir = LEFT
+			
+	elif velocity.x > 0:
+			_facing_dir = RIGHT
+			
+	$Locomotion.set_expression_property("direction", _facing_dir)

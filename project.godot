@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Acerola jam 0: abberation"
+config/tags=PackedStringArray("game_jams")
 run/main_scene="res://Scenes/Main.tscn"
 config/features=PackedStringArray("4.1", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -25,7 +26,7 @@ project/assembly_name="Acerola jam 0- abberation"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/better-terrain/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/object_state_machine/plugin.cfg")
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/better-terrain/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg")
 
 [input]
 

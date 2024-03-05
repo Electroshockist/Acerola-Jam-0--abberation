@@ -28,9 +28,19 @@
                 "file": "Timeline.md"
               }
             }
+          },
+          {
+            "id": "025a64956008a42b",
+            "type": "leaf",
+            "state": {
+              "type": "kanban",
+              "state": {
+                "file": "Deadlines.md"
+              }
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -96,7 +106,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Timeline.md",
+                "file": "Deadlines.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,7 +123,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Timeline.md",
+                "file": "Deadlines.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -136,7 +146,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Timeline.md"
+                "file": "Deadlines.md"
               }
             }
           }
@@ -158,11 +168,16 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "c35f772372b048ce",
+  "active": "025a64956008a42b",
   "lastOpenFiles": [
+    "Untitled.md",
+    "Deadlines.md",
+    "Excalidraw/Drawing 2024-03-02 20.18.48.excalidraw.md",
     "Gameplan.md",
-    "Brainstorm.md",
     "Timeline.md",
+    "Drawing 2024-03-02 21.20.13.excalidraw.md",
+    "Excalidraw",
+    "Brainstorm.md",
     "Welcome.md"
   ]
 }

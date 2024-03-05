@@ -10,7 +10,7 @@ offset_left = 718.0
 offset_top = 39.0
 offset_right = 1098.0
 offset_bottom = 317.0
-initial_node_to_watch = NodePath("../CharacterBody2D/Locomotion")
+initial_node_to_watch = NodePath("../CharacterBody2D/Motion State")
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("1_fel8l")]
 position = Vector2(566, 302)
