@@ -35,7 +35,7 @@
             "state": {
               "type": "kanban",
               "state": {
-                "file": "Deadlines.md"
+                "file": "Timeline.md"
               }
             }
           }
@@ -106,7 +106,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Deadlines.md",
+                "file": "Timeline.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -123,7 +123,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Deadlines.md",
+                "file": "Timeline.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -146,7 +146,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Deadlines.md"
+                "file": "Timeline.md"
               }
             }
           }
@@ -170,8 +170,8 @@
   },
   "active": "025a64956008a42b",
   "lastOpenFiles": [
-    "Untitled.md",
     "Deadlines.md",
+    "Untitled.md",
     "Excalidraw/Drawing 2024-03-02 20.18.48.excalidraw.md",
     "Gameplan.md",
     "Timeline.md",

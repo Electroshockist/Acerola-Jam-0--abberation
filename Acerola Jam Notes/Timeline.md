@@ -9,6 +9,7 @@ kanban-plugin: basic
 - [ ] ### Basic Level<br>- [ ] obstacles<br>- [ ] enemy placement<br>- [ ] boss
 - [ ] ### Enemies<br>- [ ] 2 Basic enemy types<br>- [ ] Boss
 - [ ] Final Sprites and animations<br>#Stretch
+- [ ] Inter-Entity Collisions
 
 
 ## Doing

@@ -34,19 +34,28 @@ kanban-plugin: basic
 
 ## 4th
 
-- [ ] Create basic combat system
 
 
 ## 5th
 
+**Complete**
+- [ ] Create basic combat system
+- [x] Fix Player Animations
+- [x] Setup damage
+- [x] Setup Death
+- [x] Setup Blade
 
 
 ## 6th
 
+- [ ] Add damage cooldown
+- [ ] Disable/delete on death
+- [ ] Setup Gun
 
 
 ## 7th
 
+- [ ] Add Enemies
 
 
 ## 8th
