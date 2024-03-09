@@ -2,9 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://c526f6ned8gt" path="res://Prefabs/Player.tscn" id="1_fel8l"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="2_uyfrl"]
-[ext_resource type="Script" path="res://Scripts/Blade.gd" id="3_cptgr"]
-[ext_resource type="Script" path="res://Scripts/Health.gd" id="3_uuhc2"]
-[ext_resource type="Script" path="res://Scenes/HealthBar.gd" id="5_rpju6"]
+[ext_resource type="Script" path="res://Scripts/Health/Health.gd" id="3_uuhc2"]
+[ext_resource type="Script" path="res://Scripts/Health/HealthBar.gd" id="5_oisup"]
+[ext_resource type="PackedScene" uid="uid://bct4llifk8mdd" path="res://Prefabs/Projectile.tscn" id="5_vqeex"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_8eyjo"]
 radius = 10.0
@@ -19,13 +19,10 @@ offset_left = 355.0
 offset_top = 16.0
 offset_right = 735.0
 offset_bottom = 294.0
-initial_node_to_watch = NodePath("../CharacterBody2D/Locomotion")
+initial_node_to_watch = NodePath("../CharacterBody2D/Locomotion Anim")
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("1_fel8l")]
 position = Vector2(40, 49)
-
-[node name="Blade" parent="CharacterBody2D" index="3"]
-script = ExtResource("3_cptgr")
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="."]
 position = Vector2(210, 424)
@@ -40,14 +37,24 @@ script = ExtResource("3_uuhc2")
 shape = SubResource("CircleShape2D_4asc2")
 
 [node name="ProgressBar" type="ProgressBar" parent="MeshInstance2D" node_paths=PackedStringArray("health")]
-offset_left = -57.0
-offset_top = -41.0
-offset_right = 60.0
-offset_bottom = -14.0
-script = ExtResource("5_rpju6")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(15, 4)
+step = 1.0
+show_percentage = false
+script = ExtResource("5_oisup")
 health = NodePath("../Hurtbox")
 
-[connection signal="area_entered" from="CharacterBody2D/Blade/WeaponRoot/Sprite2D/Area2D" to="CharacterBody2D/Blade" method="_on_area_2d_area_entered"]
-[connection signal="on_health_changed" from="MeshInstance2D/Hurtbox" to="MeshInstance2D/ProgressBar" method="_on_hurtbox_on_health_changed"]
+[node name="Projectile" parent="." instance=ExtResource("5_vqeex")]
+position = Vector2(111, 190)
 
-[editable path="CharacterBody2D"]
+[connection signal="on_health_changed" from="MeshInstance2D/Hurtbox" to="MeshInstance2D/ProgressBar" method="_on_hurtbox_on_health_changed"]

@@ -5,7 +5,6 @@ extends ProgressBar
 func _ready():
 	max_value = health.max_health
 	value = health.current_health
-	health.on_health_changed.connect(_on_hurtbox_on_health_changed)
 
 
 func _on_hurtbox_on_health_changed(delta_health):

@@ -4,9 +4,7 @@ class_name Player
 @export var enemy_group: StringName = "Enemy"
 
 @export var speed = 300.0
-@onready var weapon_root = $Blade
-@onready var locomotion = $Locomotion
-@onready var weapon_animation_player = $Blade/WeaponRoot/AnimationPlayer
+@onready var locomotion = $"Locomotion Anim"
 
 enum {
 	FRONT,
@@ -21,9 +19,6 @@ var is_idle := true
 func _ready():
 	locomotion.set_expression_property("direction", 0)
 
-func _input(event):
-	if event.is_action("Slash"):
-		weapon_animation_player.play("Swing Back")
 
 func _physics_process(_delta):
 	# Get the input direction and handle the movement/deceleration.
@@ -43,9 +38,6 @@ func _physics_process(_delta):
 	
 	_handle_anim_vars()
 
-func _process(_delta):
-	rotate_weapon()
-
 func _handle_anim_vars():
 	if velocity.y > 0:
 			_facing_dir = FRONT
@@ -61,6 +53,4 @@ func _handle_anim_vars():
 	
 	locomotion.set_expression_property("direction", _facing_dir)
 
-func rotate_weapon():
-	var relative = get_global_mouse_position() - position
-	weapon_root.rotation = atan2(relative.y, relative.x)
+

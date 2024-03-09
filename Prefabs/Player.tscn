@@ -1,14 +1,18 @@
-[gd_scene load_steps=32 format=3 uid="uid://c526f6ned8gt"]
+[gd_scene load_steps=37 format=3 uid="uid://c526f6ned8gt"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_sno6y"]
 [ext_resource type="Texture2D" uid="uid://dddxj0ky0ibj0" path="res://art/character art/char_a_p1_0bas_humn_v01.png" id="2_uteem"]
-[ext_resource type="Script" path="res://Scripts/AnimationHandler.gd" id="3_62k1a"]
+[ext_resource type="Script" path="res://Scripts/Player Weapons.gd" id="4_4fhj7"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="4_a84hp"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="5_fq60k"]
+[ext_resource type="Script" path="res://Scripts/Blade.gd" id="5_nhytu"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/parallel_state.gd" id="5_v6cae"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/animation_player_state.gd" id="6_bj023"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="7_jh6xb"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="7_slp0t"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/expression_guard.gd" id="8_f30ij"]
 [ext_resource type="Texture2D" uid="uid://cqyc7dbialv3b" path="res://art/weapons/RPG Weapons Dark Outline.png" id="9_salse"]
+[ext_resource type="Texture2D" uid="uid://br6xye2iovmim" path="res://art/49.png" id="11_6seux"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4vt2f"]
 
@@ -156,37 +160,40 @@ _data = {
 "Walking_right": SubResource("Animation_65x3o")
 }
 
-[sub_resource type="Resource" id="Resource_ebstt"]
-script = ExtResource("8_f30ij")
-expression = "direction == 0"
+[sub_resource type="GDScript" id="GDScript_qv6dj"]
+script/source = "extends AnimationPlayer
 
-[sub_resource type="Resource" id="Resource_83sxk"]
-script = ExtResource("8_f30ij")
-expression = "direction == 1"
+func _check_idle() -> bool:
+	return $\"../..\".is_idle
 
-[sub_resource type="Resource" id="Resource_qejup"]
-script = ExtResource("8_f30ij")
-expression = "direction == 2"
+func _on_front_event_received(_event):
+	if _check_idle():
+		current_animation = \"Idle_front\"
+	else:
+		current_animation = \"Walking_front\"
 
-[sub_resource type="Resource" id="Resource_u36nk"]
-script = ExtResource("8_f30ij")
-expression = "direction == 3"
+func _on_back_event_received(_event):
+	if _check_idle():
+		current_animation = \"Idle_back\"
+	else:
+		current_animation = \"Walking_back\"
 
-[sub_resource type="Resource" id="Resource_8h3rx"]
-script = ExtResource("8_f30ij")
-expression = "direction == 0"
+func _on_left_event_received(_event):
+	if _check_idle():
+		current_animation = \"Idle_left\"
+	else:
+		current_animation = \"Walking_left\"
 
-[sub_resource type="Resource" id="Resource_iumcm"]
-script = ExtResource("8_f30ij")
-expression = "direction == 1"
+func _on_right_event_received(_event):
+	if _check_idle():
+		current_animation = \"Idle_right\"
+	else:
+		current_animation = \"Walking_right\"
 
-[sub_resource type="Resource" id="Resource_775qw"]
-script = ExtResource("8_f30ij")
-expression = "direction == 2"
 
-[sub_resource type="Resource" id="Resource_qhpyq"]
-script = ExtResource("8_f30ij")
-expression = "direction == 3"
+func _on_animation_finished(_anim_name):
+	$\"../../Locomotion\".send_event(\"return\")
+"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ml4u"]
 size = Vector2(9.8995, 24.7487)
@@ -276,6 +283,38 @@ _data = {
 "Swing Back": SubResource("Animation_lfibs")
 }
 
+[sub_resource type="Resource" id="Resource_ebstt"]
+script = ExtResource("8_f30ij")
+expression = "direction == 0"
+
+[sub_resource type="Resource" id="Resource_83sxk"]
+script = ExtResource("8_f30ij")
+expression = "direction == 1"
+
+[sub_resource type="Resource" id="Resource_qejup"]
+script = ExtResource("8_f30ij")
+expression = "direction == 2"
+
+[sub_resource type="Resource" id="Resource_u36nk"]
+script = ExtResource("8_f30ij")
+expression = "direction == 3"
+
+[sub_resource type="Resource" id="Resource_8h3rx"]
+script = ExtResource("8_f30ij")
+expression = "direction == 0"
+
+[sub_resource type="Resource" id="Resource_iumcm"]
+script = ExtResource("8_f30ij")
+expression = "direction == 1"
+
+[sub_resource type="Resource" id="Resource_775qw"]
+script = ExtResource("8_f30ij")
+expression = "direction == 2"
+
+[sub_resource type="Resource" id="Resource_qhpyq"]
+script = ExtResource("8_f30ij")
+expression = "direction == 3"
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 scale = Vector2(2, 2)
 script = ExtResource("1_sno6y")
@@ -287,141 +326,206 @@ shape = SubResource("RectangleShape2D_4vt2f")
 texture = ExtResource("2_uteem")
 hframes = 8
 vframes = 8
+frame = 56
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
 libraries = {
 "": SubResource("AnimationLibrary_a23bc")
 }
-script = ExtResource("3_62k1a")
+script = SubResource("GDScript_qv6dj")
 
-[node name="Locomotion" type="Node" parent="."]
-script = ExtResource("4_a84hp")
+[node name="Weapons" type="Node2D" parent="."]
+script = ExtResource("4_4fhj7")
 
-[node name="root" type="Node" parent="Locomotion"]
-script = ExtResource("5_fq60k")
-initial_state = NodePath("Idle")
+[node name="Blade" type="Node2D" parent="Weapons" groups=["Blade", "Damager", "Player"]]
+script = ExtResource("5_nhytu")
 
-[node name="Idle" type="Node" parent="Locomotion/root"]
-script = ExtResource("5_fq60k")
-initial_state = NodePath("Front")
-
-[node name="Front" type="Node" parent="Locomotion/root/Idle"]
-script = ExtResource("6_bj023")
-animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
-animation_name = &"Idle_front"
-
-[node name="Back" type="Node" parent="Locomotion/root/Idle"]
-script = ExtResource("6_bj023")
-animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
-animation_name = &"Idle_back"
-
-[node name="Left" type="Node" parent="Locomotion/root/Idle"]
-script = ExtResource("6_bj023")
-animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
-animation_name = &"Idle_left"
-
-[node name="Right" type="Node" parent="Locomotion/root/Idle"]
-script = ExtResource("6_bj023")
-animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
-animation_name = &"Idle_right"
-
-[node name="To Walking" type="Node" parent="Locomotion/root/Idle"]
-script = ExtResource("7_slp0t")
-to = NodePath("../../Walking")
-event = &"walking"
-
-[node name="To Front" type="Node" parent="Locomotion/root/Idle"]
-script = ExtResource("7_slp0t")
-to = NodePath("../Front")
-guard = SubResource("Resource_ebstt")
-
-[node name="To Back" type="Node" parent="Locomotion/root/Idle"]
-script = ExtResource("7_slp0t")
-to = NodePath("../Back")
-guard = SubResource("Resource_83sxk")
-
-[node name="To Left" type="Node" parent="Locomotion/root/Idle"]
-script = ExtResource("7_slp0t")
-to = NodePath("../Left")
-guard = SubResource("Resource_qejup")
-
-[node name="To Right" type="Node" parent="Locomotion/root/Idle"]
-script = ExtResource("7_slp0t")
-to = NodePath("../Right")
-guard = SubResource("Resource_u36nk")
-
-[node name="Walking" type="Node" parent="Locomotion/root"]
-script = ExtResource("5_fq60k")
-initial_state = NodePath("Front")
-
-[node name="Front" type="Node" parent="Locomotion/root/Walking"]
-script = ExtResource("6_bj023")
-animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
-animation_name = &"Walking_front"
-
-[node name="Back" type="Node" parent="Locomotion/root/Walking"]
-script = ExtResource("6_bj023")
-animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
-animation_name = &"Walking_back"
-
-[node name="Left" type="Node" parent="Locomotion/root/Walking"]
-script = ExtResource("6_bj023")
-animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
-animation_name = &"Walking_left"
-
-[node name="Right" type="Node" parent="Locomotion/root/Walking"]
-script = ExtResource("6_bj023")
-animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
-animation_name = &"Walking_right"
-
-[node name="To Idle" type="Node" parent="Locomotion/root/Walking"]
-script = ExtResource("7_slp0t")
-to = NodePath("../../Idle")
-event = &"idle"
-
-[node name="To Front" type="Node" parent="Locomotion/root/Walking"]
-script = ExtResource("7_slp0t")
-to = NodePath("../Front")
-guard = SubResource("Resource_8h3rx")
-
-[node name="To Back" type="Node" parent="Locomotion/root/Walking"]
-script = ExtResource("7_slp0t")
-to = NodePath("../Back")
-guard = SubResource("Resource_iumcm")
-
-[node name="To Left" type="Node" parent="Locomotion/root/Walking"]
-script = ExtResource("7_slp0t")
-to = NodePath("../Left")
-guard = SubResource("Resource_775qw")
-
-[node name="To Right" type="Node" parent="Locomotion/root/Walking"]
-script = ExtResource("7_slp0t")
-to = NodePath("../Right")
-guard = SubResource("Resource_qhpyq")
-
-[node name="Blade" type="Node2D" parent="." groups=["Blade", "Damager", "Player"]]
-
-[node name="WeaponRoot" type="Node2D" parent="Blade"]
+[node name="Weapon Root" type="Node2D" parent="Weapons/Blade"]
 position = Vector2(6, 1)
 
-[node name="Sprite2D" type="Sprite2D" parent="Blade/WeaponRoot"]
+[node name="Sprite2D" type="Sprite2D" parent="Weapons/Blade/Weapon Root"]
 rotation = 0.785398
 texture = ExtResource("9_salse")
 offset = Vector2(8, -8)
 region_enabled = true
 region_rect = Rect2(64, 192, 16, 16)
 
-[node name="Area2D" type="Area2D" parent="Blade/WeaponRoot/Sprite2D"]
+[node name="Area2D" type="Area2D" parent="Weapons/Blade/Weapon Root/Sprite2D"]
 collision_layer = 2
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Blade/WeaponRoot/Sprite2D/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Weapons/Blade/Weapon Root/Sprite2D/Area2D"]
 position = Vector2(9.25, -9.25)
 rotation = 0.785398
 shape = SubResource("RectangleShape2D_1ml4u")
 disabled = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Blade/WeaponRoot"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Weapons/Blade/Weapon Root"]
 libraries = {
 "": SubResource("AnimationLibrary_f6q77")
 }
+
+[node name="Weapon States" type="Node" parent="Weapons"]
+script = ExtResource("4_a84hp")
+
+[node name="Root" type="Node" parent="Weapons/Weapon States"]
+script = ExtResource("5_v6cae")
+
+[node name="Blade" type="Node" parent="Weapons/Weapon States/Root"]
+script = ExtResource("5_fq60k")
+initial_state = NodePath("Ready")
+
+[node name="Cooldown" type="Node" parent="Weapons/Weapon States/Root/Blade"]
+script = ExtResource("7_jh6xb")
+
+[node name="To Ready" type="Node" parent="Weapons/Weapon States/Root/Blade/Cooldown"]
+script = ExtResource("7_slp0t")
+to = NodePath("../../Ready")
+event = &"blade ready"
+
+[node name="Ready" type="Node" parent="Weapons/Weapon States/Root/Blade"]
+script = ExtResource("7_jh6xb")
+
+[node name="To Cooldown" type="Node" parent="Weapons/Weapon States/Root/Blade/Ready"]
+script = ExtResource("7_slp0t")
+to = NodePath("../../Cooldown")
+event = &"gun on cooldown"
+
+[node name="Gun" type="Node" parent="Weapons/Weapon States/Root"]
+script = ExtResource("5_fq60k")
+initial_state = NodePath("Ready")
+
+[node name="Cooldown" type="Node" parent="Weapons/Weapon States/Root/Gun"]
+editor_description = "Cooldown between shots"
+script = ExtResource("7_jh6xb")
+
+[node name="To Ready" type="Node" parent="Weapons/Weapon States/Root/Gun/Cooldown"]
+script = ExtResource("7_slp0t")
+to = NodePath("../../Ready")
+event = &"gun ready"
+delay_seconds = 0.25
+
+[node name="Ready" type="Node" parent="Weapons/Weapon States/Root/Gun"]
+script = ExtResource("7_jh6xb")
+
+[node name="To Cooldown" type="Node" parent="Weapons/Weapon States/Root/Gun/Ready"]
+script = ExtResource("7_slp0t")
+to = NodePath("../../Cooldown")
+event = &"gun on cooldown"
+
+[node name="Gun" type="Node2D" parent="Weapons"]
+
+[node name="Weapon Root" type="Node2D" parent="Weapons/Gun"]
+position = Vector2(2, 1.5)
+
+[node name="Sprite2D" type="Sprite2D" parent="Weapons/Gun/Weapon Root"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("11_6seux")
+centered = false
+
+[node name="Locomotion Anim" type="Node" parent="."]
+script = ExtResource("4_a84hp")
+
+[node name="root" type="Node" parent="Locomotion Anim"]
+script = ExtResource("5_fq60k")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="Locomotion Anim/root"]
+script = ExtResource("5_fq60k")
+initial_state = NodePath("Front")
+
+[node name="Front" type="Node" parent="Locomotion Anim/root/Idle"]
+script = ExtResource("6_bj023")
+animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
+animation_name = &"Idle_front"
+
+[node name="Back" type="Node" parent="Locomotion Anim/root/Idle"]
+script = ExtResource("6_bj023")
+animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
+animation_name = &"Idle_back"
+
+[node name="Left" type="Node" parent="Locomotion Anim/root/Idle"]
+script = ExtResource("6_bj023")
+animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
+animation_name = &"Idle_left"
+
+[node name="Right" type="Node" parent="Locomotion Anim/root/Idle"]
+script = ExtResource("6_bj023")
+animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
+animation_name = &"Idle_right"
+
+[node name="To Walking" type="Node" parent="Locomotion Anim/root/Idle"]
+script = ExtResource("7_slp0t")
+to = NodePath("../../Walking")
+event = &"walking"
+
+[node name="To Front" type="Node" parent="Locomotion Anim/root/Idle"]
+script = ExtResource("7_slp0t")
+to = NodePath("../Front")
+guard = SubResource("Resource_ebstt")
+
+[node name="To Back" type="Node" parent="Locomotion Anim/root/Idle"]
+script = ExtResource("7_slp0t")
+to = NodePath("../Back")
+guard = SubResource("Resource_83sxk")
+
+[node name="To Left" type="Node" parent="Locomotion Anim/root/Idle"]
+script = ExtResource("7_slp0t")
+to = NodePath("../Left")
+guard = SubResource("Resource_qejup")
+
+[node name="To Right" type="Node" parent="Locomotion Anim/root/Idle"]
+script = ExtResource("7_slp0t")
+to = NodePath("../Right")
+guard = SubResource("Resource_u36nk")
+
+[node name="Walking" type="Node" parent="Locomotion Anim/root"]
+script = ExtResource("5_fq60k")
+initial_state = NodePath("Front")
+
+[node name="Front" type="Node" parent="Locomotion Anim/root/Walking"]
+script = ExtResource("6_bj023")
+animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
+animation_name = &"Walking_front"
+
+[node name="Back" type="Node" parent="Locomotion Anim/root/Walking"]
+script = ExtResource("6_bj023")
+animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
+animation_name = &"Walking_back"
+
+[node name="Left" type="Node" parent="Locomotion Anim/root/Walking"]
+script = ExtResource("6_bj023")
+animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
+animation_name = &"Walking_left"
+
+[node name="Right" type="Node" parent="Locomotion Anim/root/Walking"]
+script = ExtResource("6_bj023")
+animation_player = NodePath("../../../../Sprite2D/AnimationPlayer")
+animation_name = &"Walking_right"
+
+[node name="To Idle" type="Node" parent="Locomotion Anim/root/Walking"]
+script = ExtResource("7_slp0t")
+to = NodePath("../../Idle")
+event = &"idle"
+
+[node name="To Front" type="Node" parent="Locomotion Anim/root/Walking"]
+script = ExtResource("7_slp0t")
+to = NodePath("../Front")
+guard = SubResource("Resource_8h3rx")
+
+[node name="To Back" type="Node" parent="Locomotion Anim/root/Walking"]
+script = ExtResource("7_slp0t")
+to = NodePath("../Back")
+guard = SubResource("Resource_iumcm")
+
+[node name="To Left" type="Node" parent="Locomotion Anim/root/Walking"]
+script = ExtResource("7_slp0t")
+to = NodePath("../Left")
+guard = SubResource("Resource_775qw")
+
+[node name="To Right" type="Node" parent="Locomotion Anim/root/Walking"]
+script = ExtResource("7_slp0t")
+to = NodePath("../Right")
+guard = SubResource("Resource_qhpyq")
+
+[connection signal="area_entered" from="Weapons/Blade/Weapon Root/Sprite2D/Area2D" to="Weapons/Blade" method="_on_area_2d_area_entered"]
