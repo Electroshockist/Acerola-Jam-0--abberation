@@ -1,5 +1,5 @@
 class_name Health
-extends Node
+extends Area2D
 
 @export var max_health := 10.0
 

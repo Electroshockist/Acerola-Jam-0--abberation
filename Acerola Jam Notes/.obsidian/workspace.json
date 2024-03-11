@@ -33,9 +33,9 @@
             "id": "025a64956008a42b",
             "type": "leaf",
             "state": {
-              "type": "excalidraw",
+              "type": "kanban",
               "state": {
-                "file": "Excalidraw/Drawing 2024-03-02 20.18.48.excalidraw.md"
+                "file": "Timeline.md"
               }
             }
           }
@@ -106,7 +106,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Excalidraw/Drawing 2024-03-02 20.18.48.excalidraw.md",
+                "file": "Timeline.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -123,7 +123,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Excalidraw/Drawing 2024-03-02 20.18.48.excalidraw.md",
+                "file": "Timeline.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -146,7 +146,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Excalidraw/Drawing 2024-03-02 20.18.48.excalidraw.md"
+                "file": "Timeline.md"
               }
             }
           }
@@ -170,12 +170,12 @@
   },
   "active": "025a64956008a42b",
   "lastOpenFiles": [
+    "Gameplan.md",
+    "Deadlines.md",
+    "Excalidraw/Drawing 2024-03-02 20.18.48.excalidraw.md",
     "Brainstorm.md",
     "Timeline.md",
     "DeaCDB1.tmp",
-    "Gameplan.md",
-    "Excalidraw/Drawing 2024-03-02 20.18.48.excalidraw.md",
-    "Deadlines.md",
     "Untitled.md",
     "Drawing 2024-03-02 21.20.13.excalidraw.md",
     "Excalidraw",

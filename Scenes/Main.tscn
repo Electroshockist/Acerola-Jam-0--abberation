@@ -19,7 +19,7 @@ offset_left = 355.0
 offset_top = 16.0
 offset_right = 735.0
 offset_bottom = 294.0
-initial_node_to_watch = NodePath("../CharacterBody2D/Locomotion Anim")
+initial_node_to_watch = NodePath("../CharacterBody2D/Weapons/Gun/Cooldown State")
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("1_fel8l")]
 position = Vector2(40, 49)
@@ -58,3 +58,5 @@ health = NodePath("../Hurtbox")
 position = Vector2(111, 190)
 
 [connection signal="on_health_changed" from="MeshInstance2D/Hurtbox" to="MeshInstance2D/ProgressBar" method="_on_hurtbox_on_health_changed"]
+
+[editable path="CharacterBody2D"]

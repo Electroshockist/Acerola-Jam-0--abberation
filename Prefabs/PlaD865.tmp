@@ -1,18 +1,19 @@
-[gd_scene load_steps=37 format=3 uid="uid://c526f6ned8gt"]
+[gd_scene load_steps=38 format=3 uid="uid://c526f6ned8gt"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_sno6y"]
 [ext_resource type="Texture2D" uid="uid://dddxj0ky0ibj0" path="res://art/character art/char_a_p1_0bas_humn_v01.png" id="2_uteem"]
 [ext_resource type="Script" path="res://Scripts/Player Weapons.gd" id="4_4fhj7"]
-[ext_resource type="Script" path="res://Scripts/Weapons/Blade.gd" id="4_4hpxc"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="4_a84hp"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="5_fq60k"]
+[ext_resource type="Script" path="res://Scripts/Blade.gd" id="5_nhytu"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/parallel_state.gd" id="5_v6cae"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/animation_player_state.gd" id="6_bj023"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="7_jh6xb"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="7_slp0t"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/expression_guard.gd" id="8_f30ij"]
 [ext_resource type="Texture2D" uid="uid://cqyc7dbialv3b" path="res://art/weapons/RPG Weapons Dark Outline.png" id="9_salse"]
-[ext_resource type="Script" path="res://Scripts/Weapons/Gun.gd" id="10_4qlk3"]
 [ext_resource type="Texture2D" uid="uid://br6xye2iovmim" path="res://art/49.png" id="11_6seux"]
+[ext_resource type="Script" path="res://Scripts/Gun.gd" id="11_lwdxe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4vt2f"]
 
@@ -337,8 +338,56 @@ script = SubResource("GDScript_qv6dj")
 [node name="Weapons" type="Node2D" parent="."]
 script = ExtResource("4_4fhj7")
 
+[node name="Weapon States" type="Node" parent="Weapons"]
+script = ExtResource("4_a84hp")
+
+[node name="Root" type="Node" parent="Weapons/Weapon States"]
+script = ExtResource("5_v6cae")
+
+[node name="Blade" type="Node" parent="Weapons/Weapon States/Root"]
+script = ExtResource("5_fq60k")
+initial_state = NodePath("Ready")
+
+[node name="Cooldown" type="Node" parent="Weapons/Weapon States/Root/Blade"]
+script = ExtResource("7_jh6xb")
+
+[node name="To Ready" type="Node" parent="Weapons/Weapon States/Root/Blade/Cooldown"]
+script = ExtResource("7_slp0t")
+to = NodePath("../../Ready")
+event = &"blade ready"
+
+[node name="Ready" type="Node" parent="Weapons/Weapon States/Root/Blade"]
+script = ExtResource("7_jh6xb")
+
+[node name="To Cooldown" type="Node" parent="Weapons/Weapon States/Root/Blade/Ready"]
+script = ExtResource("7_slp0t")
+to = NodePath("../../Cooldown")
+event = &"gun on cooldown"
+
+[node name="Gun" type="Node" parent="Weapons/Weapon States/Root"]
+script = ExtResource("5_fq60k")
+initial_state = NodePath("Ready")
+
+[node name="Cooldown" type="Node" parent="Weapons/Weapon States/Root/Gun"]
+editor_description = "Cooldown between shots"
+script = ExtResource("7_jh6xb")
+
+[node name="To Ready" type="Node" parent="Weapons/Weapon States/Root/Gun/Cooldown"]
+script = ExtResource("7_slp0t")
+to = NodePath("../../Ready")
+event = &"gun ready"
+delay_seconds = 0.25
+
+[node name="Ready" type="Node" parent="Weapons/Weapon States/Root/Gun"]
+script = ExtResource("7_jh6xb")
+
+[node name="To Cooldown" type="Node" parent="Weapons/Weapon States/Root/Gun/Ready"]
+script = ExtResource("7_slp0t")
+to = NodePath("../../Cooldown")
+event = &"gun on cooldown"
+
 [node name="Blade" type="Node2D" parent="Weapons" groups=["Blade", "Damager", "Player"]]
-script = ExtResource("4_4hpxc")
+script = ExtResource("5_nhytu")
 
 [node name="Weapon Root" type="Node2D" parent="Weapons/Blade"]
 position = Vector2(6, 1)
@@ -364,35 +413,9 @@ libraries = {
 "": SubResource("AnimationLibrary_f6q77")
 }
 
-[node name="Cooldown State" type="Node" parent="Weapons/Blade"]
-script = ExtResource("4_a84hp")
-track_in_editor = true
-
-[node name="root" type="Node" parent="Weapons/Blade/Cooldown State"]
-script = ExtResource("5_fq60k")
-initial_state = NodePath("Ready")
-
-[node name="Cooldown" type="Node" parent="Weapons/Blade/Cooldown State/root"]
-script = ExtResource("7_jh6xb")
-
-[node name="To Ready" type="Node" parent="Weapons/Blade/Cooldown State/root/Cooldown"]
-script = ExtResource("7_slp0t")
-to = NodePath("../../Ready")
-event = &"blade ready"
-
-[node name="Ready" type="Node" parent="Weapons/Blade/Cooldown State/root"]
-script = ExtResource("7_jh6xb")
-
-[node name="To Cooldown" type="Node" parent="Weapons/Blade/Cooldown State/root/Ready"]
-script = ExtResource("7_slp0t")
-to = NodePath("../../Cooldown")
-event = &"gun on cooldown"
-
-[node name="Gun" type="Node2D" parent="Weapons" node_paths=PackedStringArray("cooldown_chart")]
+[node name="Gun" type="Node2D" parent="Weapons"]
 position = Vector2(-3, 0)
-script = ExtResource("10_4qlk3")
-cooldown_chart = NodePath("Cooldown State")
-cooldown_event = &"on cooldown"
+script = ExtResource("11_lwdxe")
 
 [node name="Weapon Root" type="Node2D" parent="Weapons/Gun"]
 
@@ -402,34 +425,8 @@ texture = ExtResource("11_6seux")
 centered = false
 offset = Vector2(0, -8)
 
-[node name="Cooldown State" type="Node" parent="Weapons/Gun"]
-script = ExtResource("4_a84hp")
-track_in_editor = true
-
-[node name="root" type="Node" parent="Weapons/Gun/Cooldown State"]
-script = ExtResource("5_fq60k")
-initial_state = NodePath("Ready")
-
-[node name="Cooldown" type="Node" parent="Weapons/Gun/Cooldown State/root"]
-editor_description = "Cooldown between shots"
-script = ExtResource("7_jh6xb")
-
-[node name="To Ready" type="Node" parent="Weapons/Gun/Cooldown State/root/Cooldown"]
-script = ExtResource("7_slp0t")
-to = NodePath("../../Ready")
-delay_seconds = 0.25
-
-[node name="Ready" type="Node" parent="Weapons/Gun/Cooldown State/root"]
-script = ExtResource("7_jh6xb")
-
-[node name="To Cooldown" type="Node" parent="Weapons/Gun/Cooldown State/root/Ready"]
-script = ExtResource("7_slp0t")
-to = NodePath("../../Cooldown")
-event = &"on cooldown"
-
 [node name="Locomotion Anim" type="Node" parent="."]
 script = ExtResource("4_a84hp")
-track_in_editor = true
 
 [node name="root" type="Node" parent="Locomotion Anim"]
 script = ExtResource("5_fq60k")
@@ -540,4 +537,3 @@ self_modulate = Color(1, 0.258824, 0.258824, 1)
 texture = ExtResource("11_6seux")
 
 [connection signal="area_entered" from="Weapons/Blade/Weapon Root/Sprite2D/Hitbox" to="Weapons/Blade" method="_on_area_2d_area_entered"]
-[connection signal="state_entered" from="Weapons/Gun/Cooldown State/root/Ready" to="Weapons/Gun" method="_on_ready_state_entered"]

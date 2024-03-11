@@ -67,6 +67,12 @@ Fire={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Uncategorized"
+2d_physics/layer_2="Hurtbox (takes damage)"
+2d_physics/layer_3="Hitbox (deals damage)"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=3
