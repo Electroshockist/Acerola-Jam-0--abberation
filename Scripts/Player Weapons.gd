@@ -13,5 +13,3 @@ func rotate_weapon():
 	blade_root.rotation = rot
 	gun_root.rotation = rot
 	
-	
-	

@@ -1,7 +1,9 @@
-[gd_scene load_steps=38 format=3 uid="uid://c526f6ned8gt"]
+[gd_scene load_steps=40 format=3 uid="uid://c526f6ned8gt"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_sno6y"]
+[ext_resource type="Script" path="res://Scripts/Health/Health.gd" id="2_6ammp"]
 [ext_resource type="Texture2D" uid="uid://dddxj0ky0ibj0" path="res://art/character art/char_a_p1_0bas_humn_v01.png" id="2_uteem"]
+[ext_resource type="Script" path="res://Scripts/Health/HealthBar.gd" id="3_a5igk"]
 [ext_resource type="Script" path="res://Scripts/Player Weapons.gd" id="4_4fhj7"]
 [ext_resource type="Script" path="res://Scripts/Weapons/Blade.gd" id="4_4hpxc"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="4_a84hp"]
@@ -320,6 +322,24 @@ expression = "direction == 3"
 scale = Vector2(2, 2)
 script = ExtResource("1_sno6y")
 
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("2_6ammp")
+
+[node name="UI" type="Node" parent="Hurtbox"]
+
+[node name="ProgressBar" type="ProgressBar" parent="Hurtbox/UI" node_paths=PackedStringArray("health")]
+offset_left = 7.0
+offset_top = 10.0
+offset_right = 164.0
+offset_bottom = 37.0
+script = ExtResource("3_a5igk")
+health = NodePath("../..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_4vt2f")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_4vt2f")
 
@@ -545,6 +565,8 @@ offset_right = -25.0
 offset_bottom = -377.0
 initial_node_to_watch = NodePath("../../Weapons/Blade/Cooldown State")
 
+[connection signal="on_death" from="Hurtbox" to="." method="_on_hurtbox_on_death"]
+[connection signal="on_health_changed" from="Hurtbox" to="Hurtbox/UI/ProgressBar" method="_on_hurtbox_on_health_changed"]
 [connection signal="area_entered" from="Weapons/Blade/Weapon Root/Sprite2D/Hitbox" to="Weapons/Blade" method="_on_area_2d_area_entered"]
 [connection signal="animation_finished" from="Weapons/Blade/Weapon Root/AnimationPlayer" to="Weapons/Blade" method="_on_animation_player_animation_finished"]
 [connection signal="state_entered" from="Weapons/Blade/Cooldown State/root/Ready" to="Weapons/Blade" method="_on_ready_state_entered"]

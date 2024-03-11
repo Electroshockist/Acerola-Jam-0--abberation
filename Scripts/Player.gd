@@ -20,6 +20,9 @@ func _ready():
 	locomotion.set_expression_property("direction", 0)
 
 func _physics_process(_delta):
+	if Input.is_action_just_pressed("Hurt myself today"):
+		$Hurtbox.modify_health(-1)
+	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_vector("Move Left", "Move Right", "Move Up","Move Down")
@@ -52,4 +55,15 @@ func _handle_anim_vars():
 	
 	locomotion.set_expression_property("direction", _facing_dir)
 
-
+func _on_hurtbox_on_death():
+	set_process(false)
+	set_physics_process(false)
+	
+	_disable_children(self)
+		
+#todo fix
+func _disable_children(node: Node):
+	for child in node.get_children():
+		print(child.name)
+		_disable_children(child)
+		child.queue_free()

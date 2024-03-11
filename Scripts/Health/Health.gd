@@ -26,4 +26,3 @@ func modify_health(delta_health: float):
 		on_health_changed.emit(current_health - prev_health)
 		if is_dead:
 			on_death.emit()
-		print(current_health)
