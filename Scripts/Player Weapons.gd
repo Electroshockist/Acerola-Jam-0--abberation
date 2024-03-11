@@ -1,12 +1,7 @@
 extends Node
 
-@onready var weapon_animation_player = $Blade/"Weapon Root"/AnimationPlayer
 @onready var blade_root = $Blade
 @onready var gun_root = $Gun
-
-func _input(event):
-	if event.is_action("Slash"):
-		weapon_animation_player.play("Swing Back")
 
 func _process(_delta):
 	rotate_weapon()

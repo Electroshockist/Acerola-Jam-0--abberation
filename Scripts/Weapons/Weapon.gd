@@ -7,11 +7,12 @@ extends Node2D
 
 var on_cooldown := false
 
-func try_action():
+func try_action(start_cooldown := true):
 	if not on_cooldown:
 		do_action()
-		cooldown_chart.send_event(cooldown_event)
-		on_cooldown = true
+		if start_cooldown:
+			cooldown_chart.send_event(cooldown_event)
+			on_cooldown = true
 
 func off_cooldown():
 	on_cooldown = false

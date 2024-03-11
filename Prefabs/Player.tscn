@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://c526f6ned8gt"]
+[gd_scene load_steps=38 format=3 uid="uid://c526f6ned8gt"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_sno6y"]
 [ext_resource type="Texture2D" uid="uid://dddxj0ky0ibj0" path="res://art/character art/char_a_p1_0bas_humn_v01.png" id="2_uteem"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://cqyc7dbialv3b" path="res://art/weapons/RPG Weapons Dark Outline.png" id="9_salse"]
 [ext_resource type="Script" path="res://Scripts/Weapons/Gun.gd" id="10_4qlk3"]
 [ext_resource type="Texture2D" uid="uid://br6xye2iovmim" path="res://art/49.png" id="11_6seux"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="14_scpfu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4vt2f"]
 
@@ -326,7 +327,7 @@ shape = SubResource("RectangleShape2D_4vt2f")
 texture = ExtResource("2_uteem")
 hframes = 8
 vframes = 8
-frame = 56
+frame = 8
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
 libraries = {
@@ -337,8 +338,10 @@ script = SubResource("GDScript_qv6dj")
 [node name="Weapons" type="Node2D" parent="."]
 script = ExtResource("4_4fhj7")
 
-[node name="Blade" type="Node2D" parent="Weapons" groups=["Blade", "Damager", "Player"]]
+[node name="Blade" type="Node2D" parent="Weapons" node_paths=PackedStringArray("cooldown_chart") groups=["Blade", "Damager", "Player"]]
 script = ExtResource("4_4hpxc")
+cooldown_chart = NodePath("Cooldown State")
+cooldown_event = &"on cooldown"
 
 [node name="Weapon Root" type="Node2D" parent="Weapons/Blade"]
 position = Vector2(6, 1)
@@ -378,7 +381,7 @@ script = ExtResource("7_jh6xb")
 [node name="To Ready" type="Node" parent="Weapons/Blade/Cooldown State/root/Cooldown"]
 script = ExtResource("7_slp0t")
 to = NodePath("../../Ready")
-event = &"blade ready"
+delay_seconds = 0.1
 
 [node name="Ready" type="Node" parent="Weapons/Blade/Cooldown State/root"]
 script = ExtResource("7_jh6xb")
@@ -386,7 +389,7 @@ script = ExtResource("7_jh6xb")
 [node name="To Cooldown" type="Node" parent="Weapons/Blade/Cooldown State/root/Ready"]
 script = ExtResource("7_slp0t")
 to = NodePath("../../Cooldown")
-event = &"gun on cooldown"
+event = &"on cooldown"
 
 [node name="Gun" type="Node2D" parent="Weapons" node_paths=PackedStringArray("cooldown_chart")]
 position = Vector2(-3, 0)
@@ -533,11 +536,16 @@ script = ExtResource("7_slp0t")
 to = NodePath("../Right")
 guard = SubResource("Resource_qhpyq")
 
-[node name="Node" type="Node" parent="."]
+[node name="Node2" type="Node" parent="."]
 
-[node name="Sprite2D" type="Sprite2D" parent="Node"]
-self_modulate = Color(1, 0.258824, 0.258824, 1)
-texture = ExtResource("11_6seux")
+[node name="StateChartDebugger" parent="Node2" instance=ExtResource("14_scpfu")]
+offset_left = 852.0
+offset_top = -1.0
+offset_right = -25.0
+offset_bottom = -377.0
+initial_node_to_watch = NodePath("../../Weapons/Blade/Cooldown State")
 
 [connection signal="area_entered" from="Weapons/Blade/Weapon Root/Sprite2D/Hitbox" to="Weapons/Blade" method="_on_area_2d_area_entered"]
+[connection signal="animation_finished" from="Weapons/Blade/Weapon Root/AnimationPlayer" to="Weapons/Blade" method="_on_animation_player_animation_finished"]
+[connection signal="state_entered" from="Weapons/Blade/Cooldown State/root/Ready" to="Weapons/Blade" method="_on_ready_state_entered"]
 [connection signal="state_entered" from="Weapons/Gun/Cooldown State/root/Ready" to="Weapons/Gun" method="_on_ready_state_entered"]

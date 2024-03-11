@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://d140t8x8uydxl"]
+[gd_scene load_steps=7 format=3 uid="uid://d140t8x8uydxl"]
 
 [ext_resource type="PackedScene" uid="uid://c526f6ned8gt" path="res://Prefabs/Player.tscn" id="1_fel8l"]
-[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="2_uyfrl"]
 [ext_resource type="Script" path="res://Scripts/Health/Health.gd" id="3_uuhc2"]
 [ext_resource type="Script" path="res://Scripts/Health/HealthBar.gd" id="5_oisup"]
 [ext_resource type="PackedScene" uid="uid://bct4llifk8mdd" path="res://Prefabs/Projectile.tscn" id="5_vqeex"]
@@ -13,13 +12,6 @@ height = 20.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_4asc2"]
 
 [node name="Node2D" type="Node2D"]
-
-[node name="StateChartDebugger" parent="." instance=ExtResource("2_uyfrl")]
-offset_left = 355.0
-offset_top = 16.0
-offset_right = 735.0
-offset_bottom = 294.0
-initial_node_to_watch = NodePath("../CharacterBody2D/Weapons/Gun/Cooldown State")
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("1_fel8l")]
 position = Vector2(40, 49)
@@ -58,5 +50,3 @@ health = NodePath("../Hurtbox")
 position = Vector2(111, 190)
 
 [connection signal="on_health_changed" from="MeshInstance2D/Hurtbox" to="MeshInstance2D/ProgressBar" method="_on_hurtbox_on_health_changed"]
-
-[editable path="CharacterBody2D"]
