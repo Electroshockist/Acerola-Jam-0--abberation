@@ -7,7 +7,7 @@ kanban-plugin: basic
 ## Todo
 
 - [ ] ### Basic Level<br>- [ ] obstacles<br>- [ ] enemy placement<br>- [ ] boss
-- [ ] ### Enemies<br>- [ ] 2 Basic enemy types<br>- [ ] Boss
+- [ ] ### Enemies<br>- [ ] 2 Basic enemy types<br>#Stretch <br>- [ ] Boss
 - [ ] Final Sprites and animations<br>#Stretch
 - [ ] Inter-Entity Collisions
 - [ ] Make character sprite face cursor
@@ -18,8 +18,9 @@ kanban-plugin: basic
 
 ## Doing
 
-- [ ] ### Health System<br>- [x] Health<br>- [x] Damage<br>- [ ] Death<br>	- [ ] Disable Controls<br>	- [x] Disable Health<br>- [ ] UI<br>	- [x] Enemy UI<br>	- [ ] Player UI
+- [ ] ### Health System<br>- [x] Health<br>- [x] Damage<br>- [x] Death<br>	- [x] Disable Controls<br>	- [x] Disable Health<br>- [ ] UI<br>	- [x] Enemy UI<br>	- [ ] Player UI
 - [ ] Enemy weapons
+- [ ] Heal player on hit
 
 
 ## Done
