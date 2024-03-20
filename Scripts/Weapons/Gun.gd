@@ -1,35 +1,26 @@
+class_name Gun
 extends Weapon
 
-var projectile_root:Node
-
 const projectile = preload("res://Prefabs/Projectile.tscn")
-
-func _ready():
-	projectile_root = Node.new()
-	add_child(projectile_root)
 	
 func _input(event):
 	if event.is_action_pressed("Fire"):
 		try_action()
-		
-		
 
 func do_action():
 	var proj = projectile.instantiate()
 		
-#		var p = owner as Player
-#
-#		var dot = p.velocity.dot(Vector2.from_angle(rotation))
-#
-#		print(Vector2.from_angle(rotation).length())
-#
-#		var added_vel = dot #* p.velocity.length()
-#
-#		proj.speed += added_vel
+	#adds player velocity to bullet
+#	var p = owner as Player
+#	var dot = p.velocity.dot(Vector2.from_angle(rotation))
+#	var added_vel = dot #* p.velocity.length()
+#	proj.speed += added_vel
 	
 	proj.rotation = rotation
 	proj.global_position = owner.global_position
-	projectile_root.add_child(proj)
+	proj.enemy_group = enemy_group
+	
+	get_tree().root.add_child(proj)
 	
 	
 

@@ -1,9 +1,10 @@
 class_name Weapon
-
 extends Node2D
 
 @export var cooldown_chart : StateChart
 @export var cooldown_event : StringName
+
+var enemy_group: StringName
 
 var on_cooldown := false
 

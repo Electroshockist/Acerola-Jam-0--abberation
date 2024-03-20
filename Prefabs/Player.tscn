@@ -318,12 +318,15 @@ expression = "direction == 2"
 script = ExtResource("8_f30ij")
 expression = "direction == 3"
 
-[node name="Player" type="CharacterBody2D" groups=["Player"]]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("health", "blade", "gun") groups=["Player"]]
 scale = Vector2(2, 2)
 script = ExtResource("1_sno6y")
+health = NodePath("Hurtbox")
+blade = NodePath("Weapons/Blade")
+gun = NodePath("Weapons/Gun")
 
-[node name="Hurtbox" type="Area2D" parent="."]
-collision_layer = 2
+[node name="Hurtbox" type="Area2D" parent="." groups=["Player"]]
+collision_layer = 3
 collision_mask = 4
 script = ExtResource("2_6ammp")
 
@@ -358,8 +361,11 @@ script = SubResource("GDScript_qv6dj")
 [node name="Weapons" type="Node2D" parent="."]
 script = ExtResource("4_4fhj7")
 
-[node name="Blade" type="Node2D" parent="Weapons" node_paths=PackedStringArray("cooldown_chart") groups=["Blade", "Damager", "Player"]]
+[node name="Blade" type="Node2D" parent="Weapons" node_paths=PackedStringArray("animation_player", "cooldown_chart") groups=["Player"]]
+position = Vector2(0, -5)
 script = ExtResource("4_4hpxc")
+animation_player = NodePath("Weapon Root/AnimationPlayer")
+swing_anim_name = &"Swing Back"
 cooldown_chart = NodePath("Cooldown State")
 cooldown_event = &"on cooldown"
 
@@ -373,8 +379,9 @@ offset = Vector2(8, -8)
 region_enabled = true
 region_rect = Rect2(64, 192, 16, 16)
 
-[node name="Hitbox" type="Area2D" parent="Weapons/Blade/Weapon Root/Sprite2D"]
-collision_mask = 4
+[node name="Hitbox" type="Area2D" parent="Weapons/Blade/Weapon Root/Sprite2D" groups=["Player"]]
+collision_layer = 4
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Weapons/Blade/Weapon Root/Sprite2D/Hitbox"]
 position = Vector2(9.25, -9.25)
@@ -412,7 +419,7 @@ to = NodePath("../../Cooldown")
 event = &"on cooldown"
 
 [node name="Gun" type="Node2D" parent="Weapons" node_paths=PackedStringArray("cooldown_chart")]
-position = Vector2(-3, 0)
+position = Vector2(6.5, 2)
 script = ExtResource("10_4qlk3")
 cooldown_chart = NodePath("Cooldown State")
 cooldown_event = &"on cooldown"
